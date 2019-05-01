@@ -1,105 +1,119 @@
-#include<iostream>
+#include<iostream>  
 #include<math.h>
 #include<string.h>
 #include<stdlib.h>
-
 using namespace std;
-
 class num
 {
-	public:
-		char n[9];
-		long int m;
-		int z;
-		num()
-		{
-			n[9] = '\0';
-			m = 0;
-		}	
-		
+  public: char n[9];
+          long int m;
+          num()
+          {
+            n[9]='\0';
+            m=0;
+          }
 };
-
 class hexa:public num
 {
-	public:
-		int read_hex()
-		{
-			cout<<"Enter a Hexadecimal Number:";
-			cin>>n;
-			int length = strlen(n);
-			int base = 1;int dec = 0;
-			for(int i =(length-1);i>=0;i--)
-			{
-				if(n[i]>='0' && n[i]<='9')
-				{
-					dec += (n[i]-48)*base;
-					base *= 16;
-				}
-				else if(n[i]>='A' && n[i]<='F')
-				{
-					dec += (n[i]-55)*base;
-					base *= 16;
-				}
-			}
-			return dec;
-		}
-		
-	
+  public:int read_hexa()
+         { 
+           cout<<"Enter hexadecimal no:\n";
+           cin>>n;
+           char *hexstr;
+           int length=0;
+           const int base=16;
+           unsigned long dec=0;
+           int i;
+           for(hexstr=n;*hexstr!='\0';hexstr++)
+           {
+             length++;
+             //cout<<length<<"  ";
+           }
+//           cout<<"--"<<n;
+           hexstr=n;
+//           cout<<" "<<hexstr;
+           for(i=0;*hexstr!='\0' && i<length;i++,hexstr++)
+           {
+             if(*hexstr>=48 && *hexstr<=57)
+             {
+               dec+=(((int)(*hexstr))-48)*pow(base,length-i-1);
+             }
+             else if((*hexstr>=65 && *hexstr<=70))
+                dec+=(((int)(*hexstr))-55)*pow(base,length-i-1);
+             else if(*hexstr>=97 && *hexstr<=102)
+                dec+=(((int)(*hexstr))-87)*pow(base,length-i-1);
+             else 
+                cout<<"Invalid no!!\n";
+           }
+           return dec;
+         }
 };
-
 class octa:public num
 {
-	public:
-		int read_octa()
-		{
-			
-			cout<<"Enter A Octal Number:";
-			cin>>z;
-			int dec=0,base=1;
-			int temp = z;
-			while(temp)
-			{
-				int last = temp%10;
-				temp = temp/10;
-				dec += last*base;
-				base *= 8;
-			}
-			return dec;
-		}
+   public: int read_octa()
+           {
+               long int k=0,decnum=0;
+               cout<<"Enter octal no:\n";
+               cin>>m;
+               while(m!=0)
+               {   
+                  if(m%10>7)
+                  {
+                     cout<<"Invalid octal number!\n";
+                     return -1;
+                   }
+                  decnum+=(m%10)*pow(8,k);
+                  k++;
+                  m=m/10;
+               }
+               return decnum;
+            }
 };
-
-
 int main()
 {
-	int choice,i,j,k,l,n,m;
-	hexa h;
-	octa o1,o2;
-	for(;;)
-	{
-		cout<<"\n1:Add Hexadecimal to Octal Number\t2:Add Octal Number to Decimal Number\t3:Exit\nEnter your choice:";
-		cin>>choice;
-		switch(choice)
-		{
-			case 1:
-				i = h.read_hex();
-				cout<<"\nAfter Converting HexaDecimal to Decimal Number is:"<<i<<endl;
-				j = o1.read_octa();
-				cout<<"\nAfter Converting Octal to Decimal Number is:"<<j<<endl;
-				k = i +j;
-				cout<<"\n\nAfter Adding Hex to Decimal:"<<k<<endl;		
-				break;
-			case 2:
-				l = o2.read_octa();
-				cout<<"\nAfter Converting Octal to Decimal Number is:"<<l<<endl;
-				cout<<"\nEnter a Integer Number:";
-				cin>>m;
-				n = l + m;
-				cout<<"After Adding Octal to Integer :"<<n<<endl;
-				break;
-			case 3:
-				return(0);
-			default:
-				cout<<"\nInvalid Choice\n";
-		}
-	}
+   int choice,i,j,k,l,m,n;
+   hexa h1;
+   octa o1,o2;
+   for(;;)
+   {
+      cout<<"\n1.To add hex and oct \t  2.To add oct and int\n";
+      cin>>choice;
+      switch(choice)
+      {
+         case 1: i=h1.read_hexa();
+                 cout<<"After converting hex to dec : "<<i<<endl;
+                 j=o1.read_octa();
+                 if(j==-1)
+                 {
+                   break;
+                 }
+                 else
+                 {
+                 cout<<"After converting oct to dec: "<<j<<endl;
+                 k=i+j;
+                 cout<<"Sum is: "<<k<<endl;
+                 break;
+                 }
+         case 2: m;
+                l=o2.read_octa();
+                if(l==-1)
+                {
+                   break;
+                }
+                else
+                {
+                cout<<"After converting oct to dec: "<<l<<endl;
+                cout<<"Enter interger to be added:\n";
+                cin>>m;
+                n=l+m;
+                cout<<"Sum is:  "<<n<<endl;
+                break;
+                }
+         default:return(0);
+     }
+   }
+   return 0;
 }
+                   
+          
+       
